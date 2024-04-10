@@ -27,19 +27,17 @@ class MyScaffold extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 40),
                 child: ListView.separated(
                     itemBuilder: (context, index) {
-                      return Obx(
-                        () => ListTile(
-                          title: Text(
-                            screens[index]["appBarTitle"],
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          onTap: () {
-                            DrawerListtileController.currentIndex.value = index;
-                            print(DrawerListtileController.currentIndex.value);
-                            // this.title
-                            Get.back();
-                          },
+                      return ListTile(
+                        title: Text(
+                          screens[index]["appBarTitle"],
+                          style: const TextStyle(color: Colors.white),
                         ),
+                        onTap: () {
+                          DrawerListtileController.currentIndex.value = index;
+                          print(DrawerListtileController.currentIndex.value);
+                          // this.title
+                          Get.back();
+                        },
                       );
                     },
                     separatorBuilder: (context, index) => Divider(),
@@ -84,17 +82,21 @@ class MyScaffold extends StatelessWidget {
         ],
         elevation: 3.0,
         centerTitle: true,
-        title: Text(
-          screens[DrawerListtileController.currentIndex.value]['appBarTitle'],
-          style: const TextStyle(
-            fontSize: 25,
+        title: Obx(
+          () => Text(
+            screens[DrawerListtileController.currentIndex.value]['appBarTitle'],
+            style: const TextStyle(
+              fontSize: 25,
+            ),
           ),
         ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: screens[DrawerListtileController.currentIndex.value]['screen'],
+      body: Obx(
+        () => Padding(
+          padding: const EdgeInsets.all(16),
+          child: screens[DrawerListtileController.currentIndex.value]['screen'],
+        ),
       ),
     );
   }
