@@ -20,6 +20,12 @@ class MyScaffold extends StatelessWidget {
     List<Map<String, dynamic>> screens = Screen.screens;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
+      endDrawer: Drawer(
+        child: Column(
+          children: [Text("asdfkjajfdk")],
+        ),
+      ),
       drawer: hasDrawer
           ? Drawer(
               backgroundColor: const Color(0xff141414),

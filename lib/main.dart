@@ -15,9 +15,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff00bf8e)),
-        // useMaterial3: true,
-      ),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff00bf8e)),
+          primaryColor: const Color(0xff00bf8e)
+          // useMaterial3: true,
+          ),
       home: MyScaffold(
           body: AddCategoryScreen(),
           title: "Create and Store Category",
