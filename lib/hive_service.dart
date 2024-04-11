@@ -50,4 +50,18 @@ class HiveService {
     print("Index:  $editIndex");
     contactBox.putAt(editIndex, contact);
   }
+
+  List<Contact> getSearchedContactByName(String value) {
+    if (value == null || value == "") {
+      print("Value is null");
+    }
+    print("Searched value : $value");
+    List<Contact> searchedContacts = contactBox.values
+        .where((contact) =>
+            contact.firstname!.toLowerCase().contains(value.toLowerCase()))
+        .toList();
+
+    print("Searched Result ${searchedContacts.toString()}");
+    return searchedContacts;
+  }
 }

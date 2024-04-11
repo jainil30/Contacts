@@ -100,6 +100,7 @@ class MyScaffold extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (context) {
+                      var textController = TextEditingController();
                       return AlertDialog(
                         title: Text("Search"),
                         actions: [
@@ -107,6 +108,7 @@ class MyScaffold extends StatelessWidget {
                               child: Column(
                             children: [
                               TextFormField(
+                                controller: textController,
                                 autofillHints: ContactController()
                                     .contacts
                                     .value
@@ -114,7 +116,28 @@ class MyScaffold extends StatelessWidget {
                                     .toList(),
                                 decoration: const InputDecoration(
                                     hintText: "Search", labelText: "Search"),
-                              )
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "Search field is blank";
+                                  }
+                                },
+                              ),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    ContactController().searchedContact.value =
+                                        textController.text;
+
+                                    print("adsfad");
+
+                                    print(
+                                        "--> searchedContact.value : ${ContactController().searchedContact.value}");
+                                    print(
+                                        "--> textController.text : ${textController.text}");
+
+                                    ContactController()
+                                        .searchedContactByFirstname();
+                                  },
+                                  child: Text("Search"))
                             ],
                           ))
                         ],

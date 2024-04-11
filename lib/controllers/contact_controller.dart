@@ -11,6 +11,10 @@ class ContactController extends GetxController {
   var emailController = TextEditingController();
   var categoryController = TextEditingController().obs;
 
+  var searchedController = TextEditingController();
+
+  var searchedContact = "".obs;
+
   var dropDownSelectedIndex = 0.obs;
   bool isEditMode = false;
   int index = 0;
@@ -61,5 +65,32 @@ class ContactController extends GetxController {
         index);
 
     getAllContacts();
+  }
+
+  // void searchedContactByFirstname() {
+  //   contacts.clear();
+  //
+  //   contacts.assignAll(
+  //       HiveService().getSearchedContactByName(searchedContact.value));
+  //
+  //   print(contacts.map((element) => print(element.firstname)));
+  // }
+
+  void searchedContactByFirstname() {
+    print("searchedContact.value : ${searchedContact.value}");
+    print("searchedController.text : ${searchedController.text}");
+
+    // Clear the current list of contacts
+    contacts.clear();
+
+    // Get the searched contacts based on the value in searchedContact.value
+    List<Contact> searchedContacts =
+        HiveService().getSearchedContactByName(searchedContact.value);
+
+    // Assign the searched contacts to the contacts list
+    contacts.assignAll(searchedContacts);
+
+    // Print the first names of the searched contacts (optional)
+    print(contacts.map((contact) => contact.firstname));
   }
 }
