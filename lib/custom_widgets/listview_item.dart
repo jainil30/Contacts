@@ -1,11 +1,13 @@
+import 'package:contacts/controllers/category_controller.dart';
 import 'package:contacts/custom_widgets/custome_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class CustomListviewItem extends StatelessWidget {
-  const CustomListviewItem({Key? key, required this.text});
+class CustomListviewItem extends GetView<CategoryController> {
+  const CustomListviewItem({Key? key, required this.text, required this.index});
 
   final String? text;
-
+  final int? index;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -25,7 +27,14 @@ class CustomListviewItem extends StatelessWidget {
             width: 36, // Adjust the width as needed
             height: 36, // Adjust the height as needed
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.find<CategoryController>().textController.text =
+                    controller.categories[index!].categoryName.toString();
+                controller.isEditMode = true;
+                controller.editIndex = index!;
+
+                print(controller.editIndex);
+              },
               icon: Image.asset('assets/images/edit.png'),
             ),
           ),
@@ -34,7 +43,14 @@ class CustomListviewItem extends StatelessWidget {
             width: 36, // Adjust the width as needed
             height: 36, // Adjust the height as needed
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.snackbar(
+                  "Deleted ",
+                  "${controller.categories[index!].categoryName}",
+                  icon: Icon(Icons.delete),
+                );
+                controller.deleteCategory(index!);
+              },
               icon: Image.asset('assets/images/delete.png'),
             ),
           ),

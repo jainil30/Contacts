@@ -1,3 +1,4 @@
+import 'package:contacts/controllers/contact_controller.dart';
 import 'package:contacts/controllers/drawer_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -80,14 +81,50 @@ class MyScaffold extends StatelessWidget {
             )
           : null,
       appBar: AppBar(
-        actions: const [
-          Icon(Icons.search),
-          SizedBox(
-            width: 10,
-          )
-        ],
         elevation: 3.0,
         centerTitle: true,
+        actions: <Widget>[
+          if (DrawerListtileController.currentIndex.value == 2)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(child: const Icon(Icons.filter_alt_rounded)),
+            )
+          else
+            const SizedBox(),
+          if (DrawerListtileController.currentIndex.value == 2)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
+                child: const Icon(Icons.search),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Search"),
+                        actions: [
+                          Form(
+                              child: Column(
+                            children: [
+                              TextFormField(
+                                autofillHints: ContactController()
+                                    .contacts
+                                    .value
+                                    .map((e) => e.toString())
+                                    .toList(),
+                                decoration: const InputDecoration(
+                                    hintText: "Search", labelText: "Search"),
+                              )
+                            ],
+                          ))
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+        ],
         title: Obx(
           () => Text(
             screens[DrawerListtileController.currentIndex.value]['appBarTitle'],
