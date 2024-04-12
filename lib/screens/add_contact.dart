@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:contacts/controllers/category_controller.dart';
 import 'package:contacts/controllers/contact_controller.dart';
 import 'package:contacts/controllers/drawer_controller.dart';
@@ -7,39 +9,22 @@ import 'package:contacts/custom_widgets/text_form_field.dart';
 import 'package:contacts/screens/contacts_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../Utils/others.dart';
+
+/*
+    Created by: Jainil Dalwadi
+    Purpose : Add Contact Screen
+   */
 class AddContactsScreen extends GetView<ContactController> {
   AddContactsScreen({super.key});
+
+  //Unique Key for form
   final _formKey = GlobalKey<FormState>();
+
+  //Category Controller to show categories in dropdown
   final categoryController = Get.put(CategoryController());
-
-  // List<DropdownMenuItem<String>> dropDownMenuItems = [];
-  //
-  // void populateDropDownMenuItems() async {
-  //   CategoryController categoryController = CategoryController();
-  //
-  //   for (Category category in categoryController.categories) {
-  //     dropDownMenuItems.add(
-  //       DropdownMenuItem(
-  //         child: Text(category.categoryName.toString()),
-  //         value: category.categoryName.toString(),
-  //       ),
-  //     );
-  //   }
-  // }
-
-  // DropdownMenuItem(
-  // child: Text("One"),
-  // value: "1",
-  // ),
-  // DropdownMenuItem(
-  // child: Text("Two"),
-  // value: "2",
-  // ),
-  // DropdownMenuItem(
-  // child: Text("Three"),
-  // value: "3",
-  // )
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +34,52 @@ class AddContactsScreen extends GetView<ContactController> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const CircleAvatar(
-            maxRadius: 100,
-            foregroundImage: NetworkImage(
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB9oF0K9m3KZbFrOm1s3GTB57LyEpOX2Rd9jFy91GDrw&s"),
+          InkWell(
+            child: Obx(
+              () => CircleAvatar(
+                maxRadius: 100,
+                foregroundImage:
+                    FileImage(File(controller.imagePathController.value)),
+                backgroundImage: const NetworkImage(
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB9oF0K9m3KZbFrOm1s3GTB57LyEpOX2Rd9jFy91GDrw&s"),
+              ),
+            ),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: AlertDialog(
+                        title: Text("Select image from"),
+                        actions: [
+                          ElevatedButton(
+                              onPressed: () async {
+                                XFile? image =
+                                    await selectImage(ImageSource.gallery);
+                                controller.imagePathController.value =
+                                    image!.path.toString();
+                                Get.back();
+                              },
+                              child: const Text("Gallery")),
+                          ElevatedButton(
+                              onPressed: () async {
+                                XFile? image =
+                                    await selectImage(ImageSource.camera);
+                                controller.imagePathController.value =
+                                    image!.path.toString();
+
+                                Get.back();
+                              },
+                              child: const Text("Camera")),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
           ),
           Form(
             key: _formKey,
@@ -90,19 +117,35 @@ class AddContactsScreen extends GetView<ContactController> {
                   padding: const EdgeInsets.all(8.0),
                   child: Obx(() {
                     print(categoryController.categories);
-                    return DropdownButton(
-                      value: categoryController.selectedValue.value,
-                      items: categoryController.categories
-                          .map((element) => DropdownMenuItem(
-                                value: element.categoryName,
-                                child: Text(element.categoryName.toString()),
-                              ))
-                          .toList(),
-                      hint: const Text("Category"),
-                      onChanged: (value) {
-                        categoryController.selectedValue.value =
-                            value.toString();
-                      },
+                    return Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 2, color: Theme.of(context).primaryColor),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButton(
+                          isExpanded: true,
+                          value: categoryController.selectedValue.value,
+                          items: categoryController.categories
+                              .map((element) => DropdownMenuItem(
+                                    value: element.categoryName,
+                                    child:
+                                        Text(element.categoryName.toString()),
+                                  ))
+                              .toSet()
+                              .toList(),
+                          hint: const Text("Category"),
+                          onChanged: (value) {
+                            print("Dropdown Current:  ${value}");
+                            categoryController.selectedValue.value =
+                                value.toString();
+                            print(
+                                "Dropdown Current:  ${categoryController.selectedValue.value}");
+                          },
+                        ),
+                      ),
                     );
                   }),
                 ),
@@ -110,7 +153,7 @@ class AddContactsScreen extends GetView<ContactController> {
                   margin: EdgeInsets.only(top: 20),
                   child: ElevatedButton(
                     child: CustomText(
-                      text: "Save",
+                      text: (controller.isEditMode) ? "Update" : "Save",
                       color: Colors.white,
                     ),
                     style: ElevatedButton.styleFrom(
@@ -118,6 +161,8 @@ class AddContactsScreen extends GetView<ContactController> {
                         backgroundColor: Theme.of(context).primaryColor),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        print(
+                            "Dropdown Value : ${controller.categoryController.value.text.toString()}");
                         if (controller.isEditMode) {
                           print("If --> Edit Mode");
 
@@ -127,7 +172,8 @@ class AddContactsScreen extends GetView<ContactController> {
                               int.parse(controller.mobileNumberController.text
                                   .toString()),
                               controller.emailController.text.toString(),
-                              controller.categoryController.value.text);
+                              categoryController.selectedValue.toString(),
+                              controller.imagePathController.value);
 
                           controller.isEditMode = false;
                         } else {
@@ -138,7 +184,8 @@ class AddContactsScreen extends GetView<ContactController> {
                               int.parse(controller.mobileNumberController.text
                                   .toString()),
                               controller.emailController.text.toString(),
-                              controller.categoryController.value.text);
+                              categoryController.selectedValue.toString(),
+                              controller.imagePathController.value);
                         }
 
                         Get.snackbar(
@@ -154,7 +201,7 @@ class AddContactsScreen extends GetView<ContactController> {
                         controller.mobileNumberController.text = "";
                         controller.emailController.text = "";
                         controller.categoryController.value.text = "";
-
+                        controller.imagePathController.value = "";
                         DrawerListtileController.currentIndex.value = 2;
                         // Get.to(ContactListScreen());
 

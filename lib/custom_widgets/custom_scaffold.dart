@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../Utils/screens.dart';
 
+//Custom Scaffold
 class MyScaffold extends StatelessWidget {
   final Widget body;
   final bool hasDrawer;
@@ -19,14 +20,13 @@ class MyScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> screens = Screen.screens;
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      endDrawer: Drawer(
-        child: Column(
-          children: [Text("asdfkjajfdk")],
-        ),
-      ),
+      // endDrawer: Drawer(
+      //   child: Column(
+      //     children: [Text("asdfkjajfdk")],
+      //   ),
+      // ),
       drawer: hasDrawer
           ? Drawer(
               backgroundColor: const Color(0xff141414),
@@ -83,48 +83,6 @@ class MyScaffold extends StatelessWidget {
       appBar: AppBar(
         elevation: 3.0,
         centerTitle: true,
-        actions: <Widget>[
-          if (DrawerListtileController.currentIndex.value == 2)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(child: const Icon(Icons.filter_alt_rounded)),
-            )
-          else
-            const SizedBox(),
-          if (DrawerListtileController.currentIndex.value == 2)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                child: const Icon(Icons.search),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("Search"),
-                        actions: [
-                          Form(
-                              child: Column(
-                            children: [
-                              TextFormField(
-                                autofillHints: ContactController()
-                                    .contacts
-                                    .value
-                                    .map((e) => e.toString())
-                                    .toList(),
-                                decoration: const InputDecoration(
-                                    hintText: "Search", labelText: "Search"),
-                              )
-                            ],
-                          ))
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-        ],
         title: Obx(
           () => Text(
             screens[DrawerListtileController.currentIndex.value]['appBarTitle'],
@@ -133,6 +91,62 @@ class MyScaffold extends StatelessWidget {
             ),
           ),
         ),
+        // actions: <Widget>[
+        //   if (DrawerListtileController.currentIndex.value == 2)
+        //     Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: InkWell(child: const Icon(Icons.filter_alt_rounded)),
+        //     )
+        //   else
+        //     const SizedBox(),
+        //   if (DrawerListtileController.currentIndex.value == 2)
+        //     Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: Obx(
+        //         () => InkWell(
+        //           child: const Icon(Icons.search),
+        //           onTap: () {
+        //             showDialog(
+        //               context: context,
+        //               builder: (context) {
+        //                 return AlertDialog(
+        //                   title: Text("Search"),
+        //                   actions: [
+        //                     Form(
+        //                         child: Column(
+        //                       children: [
+        //                         TextFormField(
+        //                           autofillHints: ContactController()
+        //                               .contacts
+        //                               .value
+        //                               .map((e) => e.toString())
+        //                               .toList(),
+        //                           decoration: const InputDecoration(
+        //                               hintText: "Search", labelText: "Search"),
+        //                         )
+        //                       ],
+        //                     ))
+        //                   ],
+        //                 );
+        //               },
+        //             );
+        //           },
+        //         ),
+        //       ),
+        //     ),
+        // ],
+        actions: [
+          (DrawerListtileController.currentIndex.value == 2)
+              ? IconButton(
+                  onPressed: () {
+                    print("Clear all");
+                    // ContactController().searchController.text = " ";
+                    ContactController().getAllContacts();
+                    ContactController().update();
+                  },
+                  icon: Icon(Icons.filter_alt_off))
+              : SizedBox()
+        ],
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Obx(

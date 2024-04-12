@@ -15,21 +15,37 @@ class CategoryController extends GetxController {
     super.onInit();
   }
 
+  /*
+    Created by: Jainil Dalwadi
+    Purpose : To Delete Category
+   */
   void deleteCategory(int index) {
     HiveService().deleteCategoryAt(index);
     getAllCategories();
   }
 
+  /*
+    Created by: Jainil Dalwadi
+    Purpose : To Add Category
+   */
   void addCategory(String categoryName) {
     HiveService().addCategory(categoryName);
     getAllCategories();
   }
 
+  /*
+    Created by: Jainil Dalwadi
+    Purpose : To Edit Category
+   */
   void editCategory(String categoryName) {
     HiveService().editCategory(categoryName, editIndex);
     getAllCategories();
   }
 
+  /*
+    Created by: Jainil Dalwadi
+    Purpose : To Fetch All Categories
+   */
   void getAllCategories() {
     categories.assignAll(HiveService().getAllCategories());
     categories.isNotEmpty

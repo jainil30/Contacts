@@ -23,7 +23,7 @@ class AddCategoryScreen extends GetView<CategoryController> {
             children: [
               TextFormField(
                 controller: Get.find<CategoryController>().textController,
-                decoration: InputDecoration(hintText: "Add Category"),
+                decoration: const InputDecoration(hintText: "Add Category"),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Category is empty";
@@ -65,6 +65,8 @@ class AddCategoryScreen extends GetView<CategoryController> {
                                   .text
                                   .toString());
                         }
+
+                        Get.find<CategoryController>().textController.text = "";
                       }
                     }),
               ),

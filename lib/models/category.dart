@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 
 part 'category.g.dart';
 
+//Category Model
 @HiveType(typeId: 0)
 class Category {
   Category({

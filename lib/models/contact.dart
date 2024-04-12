@@ -8,20 +8,22 @@ import 'package:hive/hive.dart';
 
 part 'contact.g.dart';
 
+//Contact Model
 @HiveType(typeId: 1)
 class Contact {
-  Contact({
-    String? firstname,
-    String? lastname,
-    num? mobilenumber,
-    String? email,
-    String? category,
-  }) {
+  Contact(
+      {String? firstname,
+      String? lastname,
+      num? mobilenumber,
+      String? email,
+      String? category,
+      String? imagepath}) {
     _firstname = firstname;
     _lastname = lastname;
     _mobilenumber = mobilenumber;
     _email = email;
     _category = category;
+    _imagepath = imagepath;
   }
 
   Contact.fromJson(dynamic json) {
@@ -47,25 +49,29 @@ class Contact {
   @HiveField(4)
   String? _category;
 
-  Contact copyWith({
-    String? firstname,
-    String? lastname,
-    num? mobilenumber,
-    String? email,
-    String? category,
-  }) =>
+  @HiveField(5)
+  String? _imagepath;
+
+  Contact copyWith(
+          {String? firstname,
+          String? lastname,
+          num? mobilenumber,
+          String? email,
+          String? category,
+          String? imagepath}) =>
       Contact(
-        firstname: firstname ?? _firstname,
-        lastname: lastname ?? _lastname,
-        mobilenumber: mobilenumber ?? _mobilenumber,
-        email: email ?? _email,
-        category: category ?? _category,
-      );
+          firstname: firstname ?? _firstname,
+          lastname: lastname ?? _lastname,
+          mobilenumber: mobilenumber ?? _mobilenumber,
+          email: email ?? _email,
+          category: category ?? _category,
+          imagepath: imagepath ?? _imagepath);
   String? get firstname => _firstname;
   String? get lastname => _lastname;
   num? get mobilenumber => _mobilenumber;
   String? get email => _email;
   String? get category => _category;
+  String? get imagepath => _imagepath;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -74,6 +80,7 @@ class Contact {
     map['mobilenumber'] = _mobilenumber;
     map['email'] = _email;
     map['category'] = _category;
+    map['imagepath'] = _imagepath;
     return map;
   }
 }

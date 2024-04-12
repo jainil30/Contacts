@@ -3,6 +3,7 @@ import 'package:contacts/custom_widgets/custome_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+//Custom Category Item
 class CustomListviewItem extends GetView<CategoryController> {
   const CustomListviewItem({Key? key, required this.text, required this.index});
 
@@ -24,8 +25,8 @@ class CustomListviewItem extends GetView<CategoryController> {
             ),
           )),
           SizedBox(
-            width: 36, // Adjust the width as needed
-            height: 36, // Adjust the height as needed
+            width: 36,
+            height: 36,
             child: IconButton(
               onPressed: () {
                 Get.find<CategoryController>().textController.text =
@@ -40,15 +41,17 @@ class CustomListviewItem extends GetView<CategoryController> {
           ),
           Container(
             margin: EdgeInsets.only(right: 5),
-            width: 36, // Adjust the width as needed
-            height: 36, // Adjust the height as needed
+            width: 36,
+            height: 36,
             child: IconButton(
               onPressed: () {
                 Get.snackbar(
                   "Deleted ",
                   "${controller.categories[index!].categoryName}",
                   icon: Icon(Icons.delete),
+                  duration: Duration(seconds: 3),
                 );
+
                 controller.deleteCategory(index!);
               },
               icon: Image.asset('assets/images/delete.png'),
