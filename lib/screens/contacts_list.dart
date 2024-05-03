@@ -16,7 +16,7 @@ class ContactListScreen extends GetView<ContactController> {
           margin: const EdgeInsets.all(10),
           child: TextFormField(
             decoration: InputDecoration(
-              hintText: "Search",
+              hintText: "Search By Firstname",
               labelText: "Search",
               border: OutlineInputBorder(
                   borderSide:

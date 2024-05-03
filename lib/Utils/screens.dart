@@ -1,6 +1,6 @@
-import 'package:contacts/screens/add_contact.dart';
 import 'package:contacts/screens/create_category_screen.dart';
 
+import '../screens/add_contact.dart';
 import '../screens/contacts_list.dart';
 
 class Screen {

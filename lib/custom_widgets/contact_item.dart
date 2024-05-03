@@ -6,7 +6,7 @@ import 'package:contacts/custom_widgets/custome_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../models/contact.dart';
+import '../models/Contact.dart';
 
 //Single Contact Item
 class ContactListtileItem extends GetView<ContactController> {
@@ -20,7 +20,7 @@ class ContactListtileItem extends GetView<ContactController> {
     return Row(
       children: [
         CircleAvatar(
-          foregroundImage: FileImage(File(contact!.imagepath.toString())),
+          foregroundImage: FileImage(File(contact!.imagePath.toString())),
           backgroundImage: NetworkImage(
               "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB9oF0K9m3KZbFrOm1s3GTB57LyEpOX2Rd9jFy91GDrw&s"),
           // foregroundImage: (contact!.imagepath != "")
@@ -43,7 +43,7 @@ class ContactListtileItem extends GetView<ContactController> {
                 ),
                 CustomText(
                   color: Colors.black38,
-                  text: "${contact!.mobilenumber.toString()}",
+                  text: "${contact!.mobileNumber.toString()}",
                   size: 15,
                 ),
                 CustomText(
@@ -64,19 +64,20 @@ class ContactListtileItem extends GetView<ContactController> {
               controller.index = index!;
 
               controller.firstNameController.text =
-                  controller.contacts[controller.index!].firstname.toString();
+                  controller.contacts[controller.index].firstname.toString();
               controller.lastNameController.text =
-                  controller.contacts[controller.index!].lastname.toString();
+                  controller.contacts[controller.index].lastname.toString();
               controller.emailController.text =
-                  controller.contacts[controller.index!].email.toString();
-              controller.mobileNumberController.text = controller
-                  .contacts[controller.index!].mobilenumber!
-                  .toString();
+                  controller.contacts[controller.index].email.toString();
+              controller.mobileNumberController.text =
+                  controller.contacts[controller.index].mobileNumber.toString();
 
               controller.imagePathController.value =
-                  controller.contacts[controller.index!].imagepath!.toString();
+                  controller.contacts[controller.index].imagePath.toString();
               // controller.firstNameController.text = controller.contacts[controller.index!].firstname.toString();
 
+              controller.editContactId =
+                  controller.contacts[controller.index].contactId!.toInt();
               DrawerListtileController.currentIndex.value = 1;
             },
             icon: Image.asset('assets/images/edit.png'),
@@ -91,7 +92,8 @@ class ContactListtileItem extends GetView<ContactController> {
               Get.snackbar("Contact Deleted",
                   "${controller.contacts[index!].firstname.toString()} ${controller.contacts[index!].lastname.toString()}",
                   icon: Icon(Icons.delete));
-              controller.deleteContact(index!);
+              controller.deleteContact(
+                  controller.contacts[index!].contactId!.toInt());
             },
             icon: Image.asset('assets/images/delete.png'),
           ),

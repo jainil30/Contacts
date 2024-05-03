@@ -17,7 +17,7 @@ import '../Utils/others.dart';
     Created by: Jainil Dalwadi
     Purpose : Add Contact Screen
    */
-class AddContactsScreen extends GetView<ContactController> {
+class AddContactsScreen extends StatelessWidget {
   AddContactsScreen({super.key});
 
   //Unique Key for form
@@ -25,10 +25,13 @@ class AddContactsScreen extends GetView<ContactController> {
 
   //Category Controller to show categories in dropdown
   final categoryController = Get.put(CategoryController());
-
+  final controller = Get.put(ContactController());
   @override
   Widget build(BuildContext context) {
     // populateDropDownMenuItems();
+    String toEditFirstName = (controller.firstNameController.text.isNotEmpty)
+        ? controller.firstNameController.text.toString()
+        : "";
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -58,8 +61,11 @@ class AddContactsScreen extends GetView<ContactController> {
                               onPressed: () async {
                                 XFile? image =
                                     await selectImage(ImageSource.gallery);
+                                print(
+                                    "File Path : ${image!.path.toString()}"); /**/
+
                                 controller.imagePathController.value =
-                                    image!.path.toString();
+                                    image.path.toString();
                                 Get.back();
                               },
                               child: const Text("Gallery")),
@@ -103,6 +109,7 @@ class AddContactsScreen extends GetView<ContactController> {
                   controller: controller.mobileNumberController,
                   hintText: "Enter Mobile Number",
                   labelText: "Mobile Number",
+                  maxLength: 10,
                   textInputType: TextInputType.phone,
                   color: Theme.of(context).primaryColor,
                 ),
@@ -127,7 +134,8 @@ class AddContactsScreen extends GetView<ContactController> {
                         padding: const EdgeInsets.all(8.0),
                         child: DropdownButton(
                           isExpanded: true,
-                          value: categoryController.selectedValue.value,
+                          value: categoryController.selectedValue.value ??
+                              "Select Category",
                           items: categoryController.categories
                               .map((element) => DropdownMenuItem(
                                     value: element.categoryName,
@@ -167,6 +175,7 @@ class AddContactsScreen extends GetView<ContactController> {
                           print("If --> Edit Mode");
 
                           controller.editContact(
+                              controller.editContactId,
                               controller.firstNameController.text.toString(),
                               controller.lastNameController.text.toString(),
                               int.parse(controller.mobileNumberController.text
@@ -177,12 +186,14 @@ class AddContactsScreen extends GetView<ContactController> {
 
                           controller.isEditMode = false;
                         } else {
-                          print("Else --> Edit Mode");
+                          print("Else --> Add Mode");
+                          print(
+                              "Image Path : ${controller.imagePathController.value}");
+
                           controller.addContact(
                               controller.firstNameController.text.toString(),
                               controller.lastNameController.text.toString(),
-                              int.parse(controller.mobileNumberController.text
-                                  .toString()),
+                              controller.mobileNumberController.text.toString(),
                               controller.emailController.text.toString(),
                               categoryController.selectedValue.toString(),
                               controller.imagePathController.value);
@@ -203,12 +214,6 @@ class AddContactsScreen extends GetView<ContactController> {
                         controller.categoryController.value.text = "";
                         controller.imagePathController.value = "";
                         DrawerListtileController.currentIndex.value = 2;
-                        // Get.to(ContactListScreen());
-
-                        // controller.firstNameController.text = "";
-                        // controller.lastNameController.text = "";
-                        // // controller.mobileNumberController.text = "";
-                        // controller.emailController.text = "";
                       }
                     },
                   ),

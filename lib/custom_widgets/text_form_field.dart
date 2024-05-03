@@ -9,13 +9,16 @@ class CustomTextFormField extends StatelessWidget {
       required this.hintText,
       this.color,
       required this.textInputType,
-      required this.labelText});
+      required this.labelText,
+      this.maxLength = 50});
 
   final TextEditingController controller;
   final String? hintText;
   final String? labelText;
   final Color? color;
   final TextInputType? textInputType;
+  final int maxLength;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
         controller: controller,
         keyboardType: textInputType,
         autovalidateMode: AutovalidateMode.onUserInteraction,
+        maxLength: maxLength,
         decoration: InputDecoration(
             hintText: hintText,
             labelText: labelText,

@@ -11,7 +11,9 @@ class MyScaffold extends StatelessWidget {
   final bool hasDrawer;
   final String title;
 
-  const MyScaffold(
+  var controller = Get.put(ContactController());
+
+  MyScaffold(
       {super.key,
       required this.body,
       this.hasDrawer = false,
@@ -49,34 +51,6 @@ class MyScaffold extends StatelessWidget {
                     },
                     separatorBuilder: (context, index) => Divider(),
                     itemCount: screens.length),
-                // child: Column(
-                //   children: [
-                //     ListTile(
-                //       title: const CustomText(
-                //           color: Colors.white, text: "Add Category"),
-                //       onTap: () {
-                //         // Get.to(const AddCategoryScreen());
-                //         body = AddCategoryScreen();
-                //       },
-                //     ),
-                //     const Divider(color: Color(0xff0b4e3d)),
-                //     ListTile(
-                //       title: const CustomText(
-                //           color: Colors.white, text: "Add Contact"),
-                //       onTap: () {
-                //         // Get.to(const AddContactsScreen());
-                //         body = AddContactsScreen();
-                //       },
-                //     ),
-                //     const Divider(color: Color(0xff0b4e3d)),
-                //     ListTile(
-                //       title: const CustomText(
-                //           color: Colors.white, text: "Add Category"),
-                //       onTap: () {},
-                //     ),
-                //     const Divider(color: Color(0xff0b4e3d)),
-                //   ],
-                // ),
               ),
             )
           : null,
@@ -91,58 +65,15 @@ class MyScaffold extends StatelessWidget {
             ),
           ),
         ),
-        // actions: <Widget>[
-        //   if (DrawerListtileController.currentIndex.value == 2)
-        //     Padding(
-        //       padding: const EdgeInsets.all(8.0),
-        //       child: InkWell(child: const Icon(Icons.filter_alt_rounded)),
-        //     )
-        //   else
-        //     const SizedBox(),
-        //   if (DrawerListtileController.currentIndex.value == 2)
-        //     Padding(
-        //       padding: const EdgeInsets.all(8.0),
-        //       child: Obx(
-        //         () => InkWell(
-        //           child: const Icon(Icons.search),
-        //           onTap: () {
-        //             showDialog(
-        //               context: context,
-        //               builder: (context) {
-        //                 return AlertDialog(
-        //                   title: Text("Search"),
-        //                   actions: [
-        //                     Form(
-        //                         child: Column(
-        //                       children: [
-        //                         TextFormField(
-        //                           autofillHints: ContactController()
-        //                               .contacts
-        //                               .value
-        //                               .map((e) => e.toString())
-        //                               .toList(),
-        //                           decoration: const InputDecoration(
-        //                               hintText: "Search", labelText: "Search"),
-        //                         )
-        //                       ],
-        //                     ))
-        //                   ],
-        //                 );
-        //               },
-        //             );
-        //           },
-        //         ),
-        //       ),
-        //     ),
-        // ],
         actions: [
           (DrawerListtileController.currentIndex.value == 2)
               ? IconButton(
                   onPressed: () {
                     print("Clear all");
+                    controller.getAllContacts();
                     // ContactController().searchController.text = " ";
-                    ContactController().getAllContacts();
-                    ContactController().update();
+                    // ContactController().getAllContacts();
+                    // ContactController().update();
                   },
                   icon: Icon(Icons.filter_alt_off))
               : SizedBox()

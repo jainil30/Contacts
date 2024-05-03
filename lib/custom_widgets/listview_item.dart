@@ -32,8 +32,10 @@ class CustomListviewItem extends GetView<CategoryController> {
                 Get.find<CategoryController>().textController.text =
                     controller.categories[index!].categoryName.toString();
                 controller.isEditMode = true;
-                controller.editIndex = index!;
 
+                controller.editIndex = index!;
+                controller.editCategoryId =
+                    controller.categories[index!].categoryId!.toInt();
                 print(controller.editIndex);
               },
               icon: Image.asset('assets/images/edit.png'),
@@ -52,7 +54,10 @@ class CustomListviewItem extends GetView<CategoryController> {
                   duration: Duration(seconds: 3),
                 );
 
-                controller.deleteCategory(index!);
+                print(
+                    "Id : ${controller.categories[index!].categoryId.toString()}");
+                controller.deleteCategory(
+                    controller.categories[index!].categoryId!.toInt());
               },
               icon: Image.asset('assets/images/delete.png'),
             ),

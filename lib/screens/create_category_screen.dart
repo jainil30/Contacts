@@ -33,10 +33,6 @@ class AddCategoryScreen extends GetView<CategoryController> {
               Container(
                 margin: EdgeInsets.only(top: 20),
                 child: ElevatedButton(
-                    child: CustomText(
-                      text: "Save",
-                      color: Colors.white,
-                    ),
                     style: ElevatedButton.styleFrom(
                         shape: const BeveledRectangleBorder(),
                         backgroundColor: Theme.of(context).primaryColor),
@@ -53,7 +49,8 @@ class AddCategoryScreen extends GetView<CategoryController> {
                               Get.find<CategoryController>()
                                   .textController
                                   .text
-                                  .toString());
+                                  .toString(),
+                              controller.editCategoryId);
                           Get.find<CategoryController>().textController.text =
                               "";
                           controller.isEditMode = false;
@@ -68,7 +65,11 @@ class AddCategoryScreen extends GetView<CategoryController> {
 
                         Get.find<CategoryController>().textController.text = "";
                       }
-                    }),
+                    },
+                    child: CustomText(
+                      text: "Save",
+                      color: Colors.white,
+                    )),
               ),
             ],
           ),

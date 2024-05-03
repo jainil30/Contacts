@@ -11,16 +11,15 @@ class CustomBottomDrawerListView extends GetView<CategoryController> {
   Widget build(BuildContext context) {
     final contactController = Get.put(ContactController());
     return ListView.separated(
-      separatorBuilder: (context, index) => Divider(),
+      separatorBuilder: (context, index) => const Divider(),
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.all(2.0),
           child: ListTile(
             title: Text(controller.categories[index].categoryName.toString()),
             onTap: () {
-              // ContactController().getContactsByCategory(
-              //     controller.categories[index].categoryName.toString());
-
+              ContactController().getContactsByCategory(
+                  controller.categories[index].categoryName.toString());
               contactController.getContactsByCategory(
                   controller.categories[index].categoryName!);
               Get.back();

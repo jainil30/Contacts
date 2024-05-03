@@ -1,5 +1,5 @@
-import 'package:contacts/hive_service.dart';
-import 'package:contacts/models/category.dart';
+import 'package:contacts/database/contacts_db.dart';
+import 'package:contacts/models/Category.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,10 +9,14 @@ class CategoryController extends GetxController {
   bool isEditMode = false;
   int editIndex = 0;
   var selectedValue = "".obs;
+  int editCategoryId = 0;
+  // var contactsDbObj;
   @override
   void onInit() {
     getAllCategories();
     super.onInit();
+
+    // contactsDbObj = ContactsDatabase();
   }
 
   /*
@@ -20,7 +24,8 @@ class CategoryController extends GetxController {
     Purpose : To Delete Category
    */
   void deleteCategory(int index) {
-    HiveService().deleteCategoryAt(index);
+    // HiveService().deleteCategoryAt(index);
+    ContactsDatabase().deleteCategory(index);
     getAllCategories();
   }
 
@@ -29,16 +34,30 @@ class CategoryController extends GetxController {
     Purpose : To Add Category
    */
   void addCategory(String categoryName) {
-    HiveService().addCategory(categoryName);
+    // HiveService().addCategory(categoryName);
+    var category = Category(categoryName: categoryName);
+    ContactsDatabase().insertCategory(category);
     getAllCategories();
+  }
+
+  /*
+    Created by: Jainil Dalwadi
+    Purpose : To Get Category by its ID
+   */
+  Future<String> getCategoryById(int categoryID) async {
+    // HiveService().addCategory(categoryName);;
+    String category = await ContactsDatabase().getCategoryById(categoryID);
+    return category;
   }
 
   /*
     Created by: Jainil Dalwadi
     Purpose : To Edit Category
    */
-  void editCategory(String categoryName) {
-    HiveService().editCategory(categoryName, editIndex);
+  void editCategory(String categoryName, int id) {
+    // HiveService().editCategory(categoryName, editIndex);
+    // ContactsDatabase.instance.editCategory()
+    ContactsDatabase().editCategory(categoryName, id);
     getAllCategories();
   }
 
@@ -46,14 +65,18 @@ class CategoryController extends GetxController {
     Created by: Jainil Dalwadi
     Purpose : To Fetch All Categories
    */
-  void getAllCategories() {
-    categories.assignAll(HiveService().getAllCategories());
+  void getAllCategories() async {
+    // categories.assignAll(HiveService().getAllCategories());
+    var dbCategories = await ContactsDatabase().getCategories(); /**/
+
+    categories.assignAll(dbCategories);
     categories.isNotEmpty
         ? selectedValue.value = categories[0].categoryName!
         : "";
     print("_________________");
     for (Category category in categories) {
-      print(category.categoryName);
+      print(
+          "ID : ${category.categoryId}  | Category : ${category.categoryName}");
     }
     update();
   }
